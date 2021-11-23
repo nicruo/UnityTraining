@@ -5,6 +5,7 @@ using UnityEngine;
 public class Ball : MonoBehaviour
 {
     private GameObject floor;
+    public float destroyTime = 3.0f;
     
     // Start is called before the first frame update
     void Start()
@@ -20,4 +21,17 @@ public class Ball : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Destroy(gameObject);
+        }
+        if (collision.gameObject.CompareTag("Floor"))
+        {
+            Destroy(gameObject, destroyTime);
+        }
+    }
+
 }

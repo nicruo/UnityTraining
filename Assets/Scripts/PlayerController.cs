@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
     public float moveSpeed;
     private Rigidbody playerRb;
     public float fuelPower;
+
+    public int health = 3;
 
     void Start()
     {
@@ -16,10 +19,23 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(health <= 0)
+        {
+            SceneManager.LoadScene("Main");
+        }
+
         if(Input.GetKey(KeyCode.Space))
         {
             playerRb.AddForce(Vector3.up * fuelPower * Time.deltaTime, ForceMode.Impulse);
-            playerRb.AddTorque(Vector3.forward * 10000);
+        }
+
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
         }
 
         Debug.Log(Time.deltaTime);
@@ -27,7 +43,14 @@ public class PlayerController : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
 
-        Vector3 newPosition = gameObject.transform.position + new Vector3(horizontalInput*Time.deltaTime * moveSpeed, 0, verticalInput * Time.deltaTime * moveSpeed);
-        gameObject.transform.position = newPosition;
+        playerRb.AddForce(new Vector3(horizontalInput * Time.deltaTime * moveSpeed, 0, verticalInput * Time.deltaTime * moveSpeed));
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.CompareTag("Ball"))
+        {
+            health--;
+        }
     }
 }

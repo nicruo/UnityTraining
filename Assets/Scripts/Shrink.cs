@@ -20,6 +20,9 @@ public class Shrink : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         //Reduce scale on collision
-        gameObject.transform.localScale *= scaleFactor;
+        if (collision.gameObject.CompareTag("Ball"))
+        {
+            gameObject.transform.localScale *= scaleFactor;
+        }
     }
 }
