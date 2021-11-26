@@ -6,9 +6,12 @@ public class SpawnManager : MonoBehaviour
 {
     public GameObject entity;
 
-    public float xSpan = 4.0f;
-    public float zSpan = 4.0f;
-    public float spawnRate = 1.0f;
+    [SerializeField]
+    private float xSpan = 4.0f;
+    [SerializeField]
+    private float zSpan = 4.0f;
+    [SerializeField]
+    float spawnRate = 1.0f;
 
     // Start is called before the first frame update
     void Start()
